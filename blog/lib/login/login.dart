@@ -1,3 +1,7 @@
+import 'package:blog/entity/user/Userresponse.dart';
+import 'package:blog/home/home.dart';
+import 'package:blog/http/api.dart';
+import 'package:blog/http/httpUtil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,10 +19,22 @@ class LoginPageState extends State<LoginPage> {
   double leftRightPadding = 50.0;
   double topBottomPadding = 0.0;
   bool _show = true;
+  User _user;
 
-  void login(){
-
+  Future login() async {
+    var response = await HttpUtil().post(Api.LOGIN, data: {
+      "username": _usernameController.text,
+      "password": _passwordController.text
+    });
+    if (response == null) return;
+    var userResponse = Userresponse.fromJson(response);
+    _user = userResponse.data;
+    Navigator.of(context).pushAndRemoveUntil(
+        new MaterialPageRoute(
+            builder: (BuildContext context) => new HomePage(_user)),
+        (Route route) => route == null);
   }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -30,10 +46,16 @@ class LoginPageState extends State<LoginPage> {
         ),
         centerTitle: true,
       ),
+      resizeToAvoidBottomPadding: false, //输入框抵住键盘
       body: new Column(
         children: <Widget>[
-          new Image.asset('images/lunch.png'),
           new Expanded(
+            flex: 1,
+            child: new Image.asset('images/lunch.png',
+                fit: BoxFit.fill, width: double.infinity),
+          ),
+          new Expanded(
+            flex: 2,
             child: new Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -45,16 +67,18 @@ class LoginPageState extends State<LoginPage> {
                     controller: _usernameController,
                     autofocus: false,
                     decoration: new InputDecoration(
-                      contentPadding: const EdgeInsets.all(10.0),
-                      helperText: "请输入你的密码",
-                      labelText: "请输入你的用户名",
-                      icon: new Icon(
-                        Icons.account_box,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      suffix: new IconButton(
-                        icon: new Icon(Icons.print, color: Colors.white,))
-                    ),
+                        contentPadding: const EdgeInsets.all(10.0),
+                        helperText: "密码",
+                        labelText: "用户名",
+                        icon: new Icon(
+                          Icons.account_box,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        suffix: new IconButton(
+                            icon: new Icon(
+                          Icons.print,
+                          color: Colors.white,
+                        ))),
                   ),
                 ),
                 new Padding(
@@ -80,11 +104,10 @@ class LoginPageState extends State<LoginPage> {
                               ? Theme.of(context).primaryColor
                               : Colors.grey,
                         ),
-                        onPressed:(){
+                        onPressed: () {
                           setState(() {
                             _show = !_show;
                           });
-
                         },
                       ),
                     ),
