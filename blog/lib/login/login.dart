@@ -21,18 +21,18 @@ class LoginPageState extends State<LoginPage> {
   bool _show = true;
   User _user;
 
-  Future login() async {
-    var response = await HttpUtil().post(Api.LOGIN, data: {
+  login() {
+    HttpUtil().post(Api.LOGIN, data: {
       "username": _usernameController.text,
       "password": _passwordController.text
-    });
-    if (response == null) return;
-    var userResponse = Userresponse.fromJson(response);
-    _user = userResponse.data;
-    Navigator.of(context).pushAndRemoveUntil(
-        new MaterialPageRoute(
-            builder: (BuildContext context) => new HomePage(_user)),
-        (Route route) => route == null);
+    }).then((response) {
+      var userResponse = Userresponse.fromJson(response);
+      _user = userResponse.data;
+      Navigator.of(context).pushAndRemoveUntil(
+          new MaterialPageRoute(
+              builder: (BuildContext context) => new HomePage(_user)),
+          (Route route) => route == null);
+    }, onError: (e) {});
   }
 
   @override
@@ -68,9 +68,8 @@ class LoginPageState extends State<LoginPage> {
                     autofocus: false,
                     decoration: new InputDecoration(
                         contentPadding: const EdgeInsets.all(10.0),
-                        helperText: "密码",
                         labelText: "用户名",
-                        icon: new Icon(
+                        prefixIcon: new Icon(
                           Icons.account_box,
                           color: Theme.of(context).primaryColor,
                         ),
@@ -91,9 +90,9 @@ class LoginPageState extends State<LoginPage> {
                     obscureText: _show,
                     decoration: new InputDecoration(
                       contentPadding: const EdgeInsets.all(10.0),
-                      labelText: "请输入密码",
+                      labelText: "密码",
 //                      helperText: "",
-                      icon: new Icon(
+                      prefixIcon: new Icon(
                         Icons.lock,
                         color: Colors.blueGrey,
                       ),

@@ -1,4 +1,5 @@
 import 'package:blog/entity/user/Userresponse.dart';
+import 'package:blog/http/api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +34,7 @@ class HomePageState extends State<HomePage>{
       appBar: new AppBar(
         title: new Text("博客主页"),
       ),
-      body: new Image.asset("images/lunch.png"),
+      body: new Image.asset(Api.BASE_URL + user.avatar),
     );
   }
   

@@ -72,27 +72,47 @@ class HttpUtil {
     }
   }
 
-  get(url, {data, options, cancelToken}) async {
-    print('get请求启动! url：$url ,body: $data');
+  Future put(url, {data, options, cancelToken}) async {
+    print('put请求启动! url：$url ,body: $data');
     Response response;
     try {
-      response = await _dio.get(
+      response = await _dio.put(
         url,
         data: data,
         cancelToken: cancelToken,
       );
-      print('get请求成功!response.data：${response.data}');
-      return response.data;
+      print('put请求成功!response.data：${response.data}');
+      return new Future(() => response.data);
     } on DioError catch (e) {
       if (CancelToken.isCancel(e)) {
-        print('get请求取消! ' + e.message);
+        print('put请求取消! ' + e.message);
       }
-      print('get请求发生错误：$e');
+      print('put请求发生错误：$e');
+      throw e;
     }
-    return null;
   }
 
-  post(url, {data, options, cancelToken}) async {
+  Future delete(url, {data, options, cancelToken}) async {
+    print('delete请求启动! url：$url ,body: $data');
+    Response response;
+    try {
+      response = await _dio.delete(
+        url,
+        data: data,
+        cancelToken: cancelToken,
+      );
+      print('delete请求成功!response.data：${response.data}');
+      return new Future(() => response.data);
+    } on DioError catch (e) {
+      if (CancelToken.isCancel(e)) {
+        print('delete请求取消! ' + e.message);
+      }
+      print('delete请求发生错误：$e');
+      throw e;
+    }
+  }
+
+  Future post(url, {data, options, cancelToken}) async {
     print('post请求启动! url：$url ,body: $data');
     Response response;
     try {
@@ -102,13 +122,33 @@ class HttpUtil {
         cancelToken: cancelToken,
       );
       print('post请求成功!response.data：${response.data}');
-      return response.data;
+      return new Future(() => response.data);
     } on DioError catch (e) {
       if (CancelToken.isCancel(e)) {
         print('post请求取消! ' + e.message);
       }
       print('post请求发生错误：$e');
+      throw e;
     }
-    return null;
+  }
+
+  Future get(url, {data, options, cancelToken}) async {
+    print('get请求启动! url：$url ,body: $data');
+    Response response;
+    try {
+      response = await _dio.get(
+        url,
+        data: data,
+        cancelToken: cancelToken,
+      );
+      print('get请求成功!response.data：${response.data}');
+      return new Future(() => response.data);
+    } on DioError catch (e) {
+      if (CancelToken.isCancel(e)) {
+        print('get请求取消! ' + e.message);
+      }
+      print('get请求发生错误：$e');
+      throw e;
+    }
   }
 }
