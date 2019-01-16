@@ -24,6 +24,8 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primarySwatch: Colors.lightBlue,
+        primaryColorDark: Color.fromRGBO(202, 12, 22, 1),
+        primaryColorLight:  Color.fromRGBO(51, 153, 234, 1),
       ),
       home: SplashPage(),
     );

@@ -36,6 +36,8 @@ class HttpUtil {
     );
     _dio = new Dio(_options);
     _dio.interceptor.request.onSend = (Options options) {
+      print("optoins");
+      print(options.headers.toString());
       // Do something before request is sent
       return options; //continue
       // If you want to resolve the request with some custom data，
@@ -66,10 +68,12 @@ class HttpUtil {
   setToken(String token) {
     _token = token;
     if (_dio != null) {
-      Map map = new Map();
+      Map<String, String> map = new Map<String, String>();
       map['Authorization'] = _token;
       _dio.options.headers.addAll(map);
     }
+    print("设置token");
+    print(_dio.options.headers.toString());
   }
 
   Future put(url, {data, options, cancelToken}) async {
@@ -133,7 +137,9 @@ class HttpUtil {
   }
 
   Future get(url, {data, options, cancelToken}) async {
-    print('get请求启动! url：$url ,body: $data');
+    print('get请求启动! url：$url ,body: $data, options:$options', );
+    print("请求头");
+    print(_dio.options.headers.toString());
     Response response;
     try {
       response = await _dio.get(

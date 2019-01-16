@@ -22,17 +22,25 @@ class LoginPageState extends State<LoginPage> {
   User _user;
 
   login() {
-    HttpUtil().post(Api.LOGIN, data: {
+    HttpUtil.getInstance().post(Api.LOGIN, data: {
       "username": _usernameController.text,
       "password": _passwordController.text
     }).then((response) {
       var userResponse = Userresponse.fromJson(response);
       _user = userResponse.data;
+      HttpUtil.getInstance().setToken(userResponse.token);
       Navigator.of(context).pushAndRemoveUntil(
           new MaterialPageRoute(
               builder: (BuildContext context) => new HomePage(_user)),
           (Route route) => route == null);
-    }, onError: (e) {});
+    }
+//    , onError: (e) {
+//      print(e);
+//        }
+        ).catchError((e) {
+      print(e);
+    }
+    );
   }
 
   @override

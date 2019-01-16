@@ -24,6 +24,7 @@ dependencies:
   english_words: ^3.1.0
   json_annotation: ^2.0.0
   fluttertoast: ^2.2.3
+  flutter_markdown: ^0.2.0
 
 dev_dependencies:
   flutter_test:
@@ -46,6 +47,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
      - images/lunch.png
+     - images/logo.png
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
