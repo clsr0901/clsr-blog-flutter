@@ -68,6 +68,7 @@ class BlogVO extends Object {
   Map<String, dynamic> toJson() => _$BlogVOToJson(this);
 }
 
+@JsonSerializable()
 class Blog extends Object {
   int id;
 
@@ -89,4 +90,12 @@ class Blog extends Object {
   String createtime;
 
   String updatetime;
+
+  Blog(this.id, this.userId, this.title, this.content);
+
+  factory Blog.fromJson(Map<String, dynamic> json) => _$BlogFromJson(json);
+
+  Map<String, dynamic> toJson() => _$BlogToJson(this);
+
+
 }

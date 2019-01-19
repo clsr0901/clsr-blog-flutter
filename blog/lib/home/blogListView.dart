@@ -1,5 +1,6 @@
 import 'package:blog/detail/detail.dart';
 import 'package:blog/entity/blog/BlogResponse.dart';
+import 'package:blog/entity/user/Userresponse.dart';
 import 'package:blog/http/api.dart';
 import 'package:blog/http/httpUtil.dart';
 import 'package:blog/test.dart';
@@ -7,7 +8,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class BlogListView extends StatefulWidget {
+  User _user;
   BlogListViewState _blogListViewState;
+
+  BlogListView(this._user);
 
   void toTop() {
     print(_blogListViewState == null);
@@ -15,7 +19,7 @@ class BlogListView extends StatefulWidget {
   }
 
   BlogListViewState getBlogListViewState() {
-    _blogListViewState = new BlogListViewState();
+    _blogListViewState = new BlogListViewState(_user);
     return _blogListViewState;
   }
 
@@ -26,12 +30,15 @@ class BlogListView extends StatefulWidget {
 }
 
 class BlogListViewState extends State<BlogListView> {
+  User _user;
   List<BlogVO> _blogs = <BlogVO>[];
   bool _noMore = false;
   int _pageNum = 1;
   int _pageSize = 10;
   String _keyword = "";
   var _scrollController = new ScrollController();
+
+  BlogListViewState(this._user);
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +58,7 @@ class BlogListViewState extends State<BlogListView> {
 
   void toTop() {
     _scrollController.animateTo(0,
-        duration: new Duration(milliseconds:500), curve: Curves.ease);
+        duration: new Duration(milliseconds: 500), curve: Curves.ease);
   }
 
   void _getBlobs() {
@@ -64,6 +71,7 @@ class BlogListViewState extends State<BlogListView> {
       setState(() {
         if (blogResponse.data.length == 0) {
           _noMore = true;
+          _pageNum--;
         } else {
           _noMore = false;
           if (_pageNum == 1) {
@@ -79,10 +87,10 @@ class BlogListViewState extends State<BlogListView> {
 
   Widget listView() => ListView.separated(
         controller: _scrollController,
-        itemCount: _blogs.length,
+        itemCount: _blogs.length + 1,
         itemBuilder: (context, index) {
           //如果到了表尾
-          if (index == _blogs.length - 1) {
+          if (index == _blogs.length) {
             //不足100条，继续获取数据
             if (!_noMore) {
               //获取数据
@@ -228,10 +236,9 @@ class BlogListViewState extends State<BlogListView> {
       child: new Card(
         child: colum,
       ),
-      onTap: (){
-        Navigator.of(context).push(
-            new MaterialPageRoute(
-                builder: (BuildContext context) => new DetailPage(blog.id)));
+      onTap: () {
+        Navigator.of(context).push(new MaterialPageRoute(
+            builder: (BuildContext context) => new DetailPage(blog.id, _user)));
       },
     );
   }

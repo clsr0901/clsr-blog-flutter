@@ -26,7 +26,7 @@ class LoginPageState extends State<LoginPage> {
       "username": _usernameController.text,
       "password": _passwordController.text
     }).then((response) {
-      var userResponse = Userresponse.fromJson(response);
+      var userResponse = UserResponse.fromJson(response);
       _user = userResponse.data;
       HttpUtil.getInstance().setToken(userResponse.token);
       Navigator.of(context).pushAndRemoveUntil(

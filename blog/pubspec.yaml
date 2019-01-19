@@ -25,6 +25,7 @@ dependencies:
   json_annotation: ^2.0.0
   fluttertoast: ^2.2.3
   flutter_markdown: ^0.2.0
+  zefyr: ^0.3.0
 
 dev_dependencies:
   flutter_test:

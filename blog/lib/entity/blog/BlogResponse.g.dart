@@ -61,3 +61,29 @@ Map<String, dynamic> _$BlogVOToJson(BlogVO instance) => <String, dynamic>{
       'createtime': instance.createtime,
       'updatetime': instance.updatetime
     };
+
+Blog _$BlogFromJson(Map<String, dynamic> json) {
+  return Blog(json['id'] as int, json['userId'] as int, json['title'] as String,
+      json['content'] as String)
+    ..summary = json['summary'] as String
+    ..hit = json['hit'] as int
+    ..view = json['view'] as int
+    ..sticky = json['sticky'] as bool
+    ..highlight = json['highlight'] as bool
+    ..createtime = json['createtime'] as String
+    ..updatetime = json['updatetime'] as String;
+}
+
+Map<String, dynamic> _$BlogToJson(Blog instance) => <String, dynamic>{
+      'id': instance.id,
+      'userId': instance.userId,
+      'title': instance.title,
+      'content': instance.content,
+      'summary': instance.summary,
+      'hit': instance.hit,
+      'view': instance.view,
+      'sticky': instance.sticky,
+      'highlight': instance.highlight,
+      'createtime': instance.createtime,
+      'updatetime': instance.updatetime
+    };

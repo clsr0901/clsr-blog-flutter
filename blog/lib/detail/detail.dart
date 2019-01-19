@@ -1,18 +1,24 @@
+import 'package:blog/comments/comments.dart';
+import 'package:blog/edit/edit.dart';
 import 'package:blog/entity/blog/BlogResponse.dart';
+import 'package:blog/entity/user/Userresponse.dart';
 import 'package:blog/http/api.dart';
 import 'package:blog/http/httpUtil.dart';
+import 'package:blog/user/userInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class DetailPage extends StatefulWidget {
   int _blogId;
+  User _user;
 
-  DetailPage(this._blogId);
+  DetailPage(this._blogId, this._user);
 
   @override
   State<StatefulWidget> createState() {
-    return new DetailPageState(_blogId);
+    return new DetailPageState(_blogId, _user);
   }
 }
 
@@ -21,8 +27,82 @@ class DetailPageState extends State<DetailPage> {
   int _blogId;
   var _scrollController = new ScrollController();
   bool _showTitle = false;
+  User _user;
 
-  DetailPageState(this._blogId);
+  DetailPageState(this._blogId, this._user);
+
+  void showDeleteDialog(BuildContext context) {
+    showDialog(context: context, builder: (_) => _shwoDeleteDialog());
+  }
+
+  AlertDialog _shwoDeleteDialog() {
+    return new AlertDialog(
+      title: new Text(
+        "删除！",
+        style: new TextStyle(
+            color: Colors.red[300],
+            fontWeight: FontWeight.w600,
+            fontSize: 24.0),
+      ),
+//      content: new Text("确定删除【" + _blogVO.title + "】?"),
+      content: new RichText(
+        text: new TextSpan(
+          text: '确定删除【',
+          style:
+              new TextStyle(inherit: true, fontSize: 18.0, color: Colors.blue),
+          children: <TextSpan>[
+            new TextSpan(
+                text: _blogVO.title,
+                style: new TextStyle(
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red[500])),
+            new TextSpan(
+                text: '】?',
+                style: new TextStyle(fontSize: 18.0, color: Colors.blue)),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        FlatButton(
+          child: Text(
+            '再想想',
+            style: new TextStyle(color: Theme.of(context).primaryColorDark),
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        FlatButton(
+          child: Text(
+            '决定了',
+            style: new TextStyle(color: Theme.of(context).primaryColorLight),
+          ),
+          onPressed: () {
+            _delete();
+          },
+        ),
+      ],
+    );
+  }
+
+  void _delete() {
+    HttpUtil.getInstance()
+        .delete(Api.DELETEBLOG + _blogId.toString())
+        .then((res) {
+      Navigator.of(context).pop();
+      Fluttertoast.showToast(
+          msg: "删除成功",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.green[300],
+          textColor: Colors.white);
+      Navigator.of(context).pop();
+    }).catchError((e) {
+      print(e);
+    });
+  }
 
   @override
   void initState() {
@@ -44,7 +124,6 @@ class DetailPageState extends State<DetailPage> {
     HttpUtil.getInstance()
         .get(Api.GETBLOG + _blogId.toString())
         .then((response) {
-          print(response);
       var blogVoResponse = BlogVOResponse.fromJson(response);
       setState(() {
         _blogVO = blogVoResponse.data;
@@ -148,9 +227,15 @@ class DetailPageState extends State<DetailPage> {
                         child: new Row(
                           children: <Widget>[
                             new Container(
-                              child: new CircleAvatar(
-                                backgroundImage: new NetworkImage(
-                                    Api.BASE_URL + _blogVO.user.avatar),
+                              child: new GestureDetector(
+                                child: new CircleAvatar(
+                                  backgroundImage: new NetworkImage(
+                                      Api.BASE_URL + _blogVO.user.avatar),
+                                ),
+                                onTap: (){
+                                  Navigator.of(context).push(new MaterialPageRoute(
+                                      builder: (BuildContext context) => new UserInfoPage(_blogVO.user.id)));
+                                },
                               ),
                               width: 24.0,
                               height: 24.0,
@@ -204,20 +289,56 @@ class DetailPageState extends State<DetailPage> {
                                 backgroundColor: Colors.black38,
                               ),
                             ),
-                            new Text.rich(new TextSpan(
-                              text: _blogVO.comments.toString(),
-                              style: new TextStyle(
-                                color: Theme.of(context).primaryColorDark,
-                                fontSize: 12.0,
+                            new GestureDetector(
+                              child: new Row(
+                                children: <Widget>[
+                                  new Text.rich(new TextSpan(
+                                    text: _blogVO.comments.toString(),
+                                    style: new TextStyle(
+                                      color: Theme.of(context).primaryColorDark,
+                                      fontSize: 12.0,
+                                    ),
+                                  )),
+                                  new Text(
+                                    " 评论",
+                                    style: new TextStyle(
+                                      color: Colors.black38,
+                                      fontSize: 12.0,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            )),
-                            new Text(
-                              " 评论",
-                              style: new TextStyle(
-                                color: Colors.black38,
-                                fontSize: 12.0,
-                              ),
+                              onTap: () {
+                                Navigator.of(context).push(
+                                    new MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            new CommentsPage(_blogId, _user)));
+                              },
                             ),
+                            new IconButton(
+                              alignment: Alignment.centerRight,
+                              icon: new Icon(
+                                Icons.edit,
+                                color: Theme.of(context).primaryColorLight,
+                              ),
+                              iconSize: 16.0,
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                    new MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            new EditPage(_user, _blogId)));
+                              },
+                            ),
+                            new IconButton(
+                                alignment: Alignment.centerLeft,
+                                icon: Icon(
+                                  Icons.delete_outline,
+                                  color: Theme.of(context).primaryColorDark,
+                                  size: 16.0,
+                                ),
+                                onPressed: () {
+                                  showDeleteDialog(context);
+                                })
                           ],
                         ),
                         padding: EdgeInsets.only(

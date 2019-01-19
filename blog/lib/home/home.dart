@@ -1,6 +1,8 @@
+import 'package:blog/edit/edit.dart';
 import 'package:blog/entity/user/Userresponse.dart';
 import 'package:blog/home/blogListView.dart';
 import 'package:blog/http/api.dart';
+import 'package:blog/user/userInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -41,7 +43,8 @@ class HomePageState extends State<HomePage> {
                 backgroundImage: new NetworkImage(Api.BASE_URL + user.avatar),
               ),
               onPressed: () {
-                Scaffold.of(context).openDrawer();
+                Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) => new UserInfoPage(user.id)));
               },
               tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
             );
@@ -69,7 +72,10 @@ class HomePageState extends State<HomePage> {
                 Icons.edit,
                 color: Theme.of(context).accentColor,
               ),
-              onPressed: null)
+              onPressed: () {
+                Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) => new EditPage(user, 0)));
+              })
         ],
       ),
       body: getListView(),
@@ -77,7 +83,7 @@ class HomePageState extends State<HomePage> {
   }
 
   BlogListView getListView() {
-    if (_blogListView == null) _blogListView = new BlogListView();
+    if (_blogListView == null) _blogListView = new BlogListView(user);
     return _blogListView;
   }
 }
