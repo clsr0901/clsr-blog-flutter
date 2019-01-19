@@ -7,21 +7,23 @@ import 'package:flutter/material.dart';
 
 class UserInfoPage extends StatefulWidget {
   int _userId;
+  User loginUser; //登陆用户
 
-  UserInfoPage(this._userId);
+  UserInfoPage(this._userId, this.loginUser);
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return new UserInfoPageState(_userId);
+    return new UserInfoPageState(_userId, loginUser);
   }
 }
 
 class UserInfoPageState extends State<UserInfoPage> {
   int _userId;
   UserVO _user;
+  User loginUser; //登陆用户
 
-  UserInfoPageState(this._userId);
+  UserInfoPageState(this._userId, this.loginUser);
 
   @override
   void initState() {
@@ -89,7 +91,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                     ),
                     new Divider(
                       color: Colors.black38,
-                      height: 1.0,
+                      height: 0.1,
                     ),
                     new Padding(
                       padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
@@ -178,7 +180,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                     ),
                     new Divider(
                       color: Colors.black38,
-                      height: 1.0,
+                      height: 0.1,
                     ),
                     new Padding(
                       padding: EdgeInsets.all(10.0),
@@ -194,7 +196,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                           ),
                           new Expanded(
                             child: new Text(
-                              _user.phone,
+                              _user == null ? "0" : _user.phone,
                               style: new TextStyle(
                                   color: Colors.black38, fontSize: 20.0),
                             ),
@@ -217,7 +219,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                           ),
                           new Expanded(
                             child: new Text(
-                              _user.email,
+                              _user == null ? "0" : _user.email,
                               style: new TextStyle(
                                   color: Colors.black38, fontSize: 20.0),
                             ),
@@ -244,7 +246,8 @@ class UserInfoPageState extends State<UserInfoPage> {
                         ),
                         padding:
                             EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0),
-                        child: new Text(_user.instruction),
+                        child:
+                            new Text(_user == null ? "0" : _user.instruction),
                         decoration: new BoxDecoration(
                           border: new Border.all(
                               width: 1.0, color: Colors.grey[200]),
@@ -262,7 +265,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                         onPressed: () {
                           Navigator.of(context).push(new MaterialPageRoute(
                               builder: (BuildContext context) =>
-                                  new MessagePage(_userId)));
+                                  new MessagePage(_userId, loginUser)));
                         },
                         child: new Text(
                           '查看留言',

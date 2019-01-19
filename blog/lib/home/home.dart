@@ -44,7 +44,7 @@ class HomePageState extends State<HomePage> {
               ),
               onPressed: () {
                 Navigator.of(context).push(new MaterialPageRoute(
-                    builder: (BuildContext context) => new UserInfoPage(user.id)));
+                    builder: (BuildContext context) => new UserInfoPage(user.id, user)));
               },
               tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
             );

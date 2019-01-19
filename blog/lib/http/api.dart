@@ -12,4 +12,8 @@ class Api {
   static String PUTCOMMENTS = "/comment/put/";
 
   static String GETUSER = "/user/get/";
+
+  static String GETMESSAGE = "/message/get/";
+  static String DELETEMESSAGE = "/message/delete/";
+  static String PUTMESSAGE = "/message/put";
 }

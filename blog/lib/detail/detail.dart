@@ -234,7 +234,7 @@ class DetailPageState extends State<DetailPage> {
                                 ),
                                 onTap: (){
                                   Navigator.of(context).push(new MaterialPageRoute(
-                                      builder: (BuildContext context) => new UserInfoPage(_blogVO.user.id)));
+                                      builder: (BuildContext context) => new UserInfoPage(_blogVO.user.id, _user)));
                                 },
                               ),
                               width: 24.0,
