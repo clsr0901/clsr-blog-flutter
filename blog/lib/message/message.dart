@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class MessagePage extends StatefulWidget {
-  int _userId;//用户中心用户id
-  User _user;//登陆用户
+  int _userId; //用户中心用户id
+  User _user; //登陆用户
 
   MessagePage(this._userId, this._user);
 
@@ -55,11 +55,17 @@ class MessagePageState extends State<MessagePage> {
     return new Scaffold(
       appBar: new AppBar(
         backgroundColor: Colors.white70,
-        title: new Text(
-          "留言",
-          style: TextStyle(
-            color: Theme.of(context).primaryColorLight,
+        title: new GestureDetector(
+          child: new Text(
+            "留言",
+            style: TextStyle(
+              color: Theme.of(context).primaryColorLight,
+            ),
           ),
+          onTap: (){
+            _scrollController.animateTo(0,
+                duration: new Duration(milliseconds: 500), curve: Curves.ease);
+          },
         ),
         leading: new IconButton(
             icon: new Icon(

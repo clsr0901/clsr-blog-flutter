@@ -61,11 +61,17 @@ class CommentsPageState extends State<CommentsPage> {
     return new Scaffold(
       appBar: new AppBar(
         backgroundColor: Colors.white70,
-        title: new Text(
-          "评论",
-          style: TextStyle(
-            color: Theme.of(context).primaryColorLight,
+        title: new GestureDetector(
+          child: new Text(
+            "评论",
+            style: TextStyle(
+              color: Theme.of(context).primaryColorLight,
+            ),
           ),
+          onTap: (){
+            _scrollController.animateTo(0,
+                duration: new Duration(milliseconds: 500), curve: Curves.ease);
+          },
         ),
         leading: new IconButton(
             icon: new Icon(

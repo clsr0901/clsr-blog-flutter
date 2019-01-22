@@ -71,7 +71,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                 borderRadius: new BorderRadius.all(new Radius.circular(10.0)),
               ),
               margin: EdgeInsets.only(
-                  top: 100.0, left: 50.0, right: 50.0, bottom: 50.0),
+                  top: 100.0, left: 50.0, right: 50.0, bottom: 100.0),
               padding: EdgeInsets.only(top: 55.0),
               child: new Container(
                 width: double.infinity,
@@ -285,14 +285,16 @@ class UserInfoPageState extends State<UserInfoPage> {
                 height: 100.0,
                 child: new Center(
                   child: ClipOval(
-                    child: new FadeInImage.assetNetwork(
-                      placeholder: "images/normal_user_icon.webp",
-                      //预览图
-                      fit: BoxFit.fitWidth,
-                      image: Api.BASE_URL + (_user == null ? "" : _user.avatar),
-                      width: 100.0,
-                      height: 100.0,
-                    ),
+                    child: _user == null
+                        ? new Image.asset("images/logo.png")
+                        : new FadeInImage.assetNetwork(
+                            placeholder: "images/logo.png",
+                            //预览图
+                            fit: BoxFit.fitWidth,
+                            image: (Api.BASE_URL + _user.avatar),
+                            width: 100.0,
+                            height: 100.0,
+                          ),
                   ),
                 ),
               ),

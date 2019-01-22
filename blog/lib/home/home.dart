@@ -2,6 +2,7 @@ import 'package:blog/edit/edit.dart';
 import 'package:blog/entity/user/Userresponse.dart';
 import 'package:blog/home/blogListView.dart';
 import 'package:blog/http/api.dart';
+import 'package:blog/upload/upload.dart';
 import 'package:blog/user/userInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +45,8 @@ class HomePageState extends State<HomePage> {
               ),
               onPressed: () {
                 Navigator.of(context).push(new MaterialPageRoute(
-                    builder: (BuildContext context) => new UserInfoPage(user.id, user)));
+                    builder: (BuildContext context) =>
+                        new UserInfoPage(user.id, user)));
               },
               tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
             );
@@ -66,7 +68,10 @@ class HomePageState extends State<HomePage> {
                 Icons.file_upload,
                 color: Theme.of(context).primaryColor,
               ),
-              onPressed: null),
+              onPressed: () {
+                Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) => new UploadPage(user)));
+              }),
           new IconButton(
               icon: new Icon(
                 Icons.edit,

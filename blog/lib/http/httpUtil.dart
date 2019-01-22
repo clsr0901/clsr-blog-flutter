@@ -31,13 +31,13 @@ class HttpUtil {
       receiveTimeout: 3000,
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+//        'Content-Type': 'application/json'
       },
     );
     _dio = new Dio(_options);
     _dio.interceptor.request.onSend = (Options options) {
-      print("optoins");
-      print(options.headers.toString());
+//      print("optoins");
+//      print(options.headers.toString());
       // Do something before request is sent
       return options; //continue
       // If you want to resolve the request with some custom data，
@@ -75,6 +75,10 @@ class HttpUtil {
     print("设置token");
     print(_dio.options.headers.toString());
   }
+
+//  setFormDataHeaders(){
+//    _dio.options.headers.remove("Content-Type");
+//  }
 
   Future put(url, {data, options, cancelToken}) async {
     print('put请求启动! url：$url ,body: $data');
@@ -117,6 +121,8 @@ class HttpUtil {
   }
 
   Future post(url, {data, options, cancelToken}) async {
+    print('post请求启动!,options:');
+    print(_dio.options.headers);
     print('post请求启动! url：$url ,body: $data');
     Response response;
     try {
@@ -137,7 +143,9 @@ class HttpUtil {
   }
 
   Future get(url, {data, options, cancelToken}) async {
-    print('get请求启动! url：$url ,body: $data, options:$options', );
+    print(
+      'get请求启动! url：$url ,body: $data, options:$options',
+    );
     print("请求头");
     print(_dio.options.headers.toString());
     Response response;
@@ -154,6 +162,21 @@ class HttpUtil {
         print('get请求取消! ' + e.message);
       }
       print('get请求发生错误：$e');
+      throw e;
+    }
+  }
+
+  Future download(url, savePath, fallback) async {
+    Response response;
+    try {
+      response = await _dio.download(url, savePath,
+          // Listen the download progress.
+          onProgress: (received, total) {
+        fallback(received / total);
+      });
+      return new Future(() => response.data);
+    } catch (e) {
+      print(e);
       throw e;
     }
   }
