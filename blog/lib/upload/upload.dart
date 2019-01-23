@@ -32,7 +32,7 @@ class UploadPageState extends State<UploadPage> {
   User _user;
   List<Source> _sources = <Source>[];
   Source selectSource;
-  static final int CHUNKSIZE = 2 * 1024 ;
+  static final int CHUNKSIZE = 2 * 1024;
 
   UploadPageState(this._user);
 
@@ -67,13 +67,10 @@ class UploadPageState extends State<UploadPage> {
           sliceUpload(file, fileName, md5Str);
         });
       }, onError: (e) {
-        print(e);
       });
     } on PlatformException catch (e) {
-      print("Error while picking the file: " + e.toString());
     }
   }
-
 
   //分片上传
   void sliceUpload(File file, String fileName, String md5Str) {
@@ -86,7 +83,6 @@ class UploadPageState extends State<UploadPage> {
       if (length % CHUNKSIZE > 0) chunks++;
       upload(file, md5Str, 0, chunks, length, fileName);
     }, onError: (e) {
-      print(e);
     });
   }
 
@@ -110,7 +106,6 @@ class UploadPageState extends State<UploadPage> {
           _sources.insert(0, sourceResponse.data);
         });
       }).catchError((e) {
-        print(e);
       });
     } else {
       File tempFile = new File("/sdcard/Download/temp");
@@ -130,7 +125,6 @@ class UploadPageState extends State<UploadPage> {
         }).then((res) {
           upload(file, md5Str, chunk + 1, chunks, fileSize, fileName);
         }).catchError((e) {
-          print(e);
         });
       });
     }
@@ -152,7 +146,6 @@ class UploadPageState extends State<UploadPage> {
         selectSource.download = false;
       });
     }).catchError((e) {
-      print(e);
     });
   }
 
@@ -175,11 +168,17 @@ class UploadPageState extends State<UploadPage> {
   void _getSources() {
     HttpUtil.getInstance().get(Api.GETSOURCE + _user.id.toString()).then((res) {
       var sourcesResponse = SourcesResponse.fromJson(res);
-      _sources.clear();
-      _sources.addAll(sourcesResponse.data);
-      _sources.add(null);
+      setState(() {
+        _sources.clear();
+        _sources.addAll(sourcesResponse.data);
+        _sources.add(null);
+      });
     }).catchError((e) {
-      print(e);
+      setState(() {
+        if(_sources.length == 0){
+          _sources.add(null);
+        }
+      });
     });
   }
 
@@ -277,7 +276,7 @@ class UploadPageState extends State<UploadPage> {
                           child: new IconButton(
                               icon: new Icon(
                                 Icons.file_download,
-                                color: Colors.yellow[500],
+                                color: Theme.of(context).primaryColorDark,
                                 size: 16.0,
                               ),
                               onPressed: () {
@@ -294,6 +293,27 @@ class UploadPageState extends State<UploadPage> {
                                   }
                                 });
                                 download(source);
+                              }),
+                          flex: 1,
+                        ),
+                        new Expanded(
+                          child: new IconButton(
+                              icon: new Icon(
+                                Icons.content_copy,
+                                color: Theme.of(context).primaryColorLight,
+                                size: 16.0,
+                              ),
+                              onPressed: () {
+                                /** 复制到剪粘板 */
+                                Clipboard.setData(
+                                    new ClipboardData(text: source.url));
+                                Fluttertoast.showToast(
+                                    msg: "复制成功",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.TOP,
+                                    timeInSecForIos: 1,
+                                    backgroundColor: Colors.green[300],
+                                    textColor: Colors.white);
                               }),
                           flex: 1,
                         ),
@@ -418,7 +438,6 @@ class UploadPageState extends State<UploadPage> {
         _sources.remove(source);
       });
     }).catchError((e) {
-      print(e);
     });
   }
 }

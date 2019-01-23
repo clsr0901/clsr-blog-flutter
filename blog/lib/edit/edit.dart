@@ -2,6 +2,7 @@ import 'package:blog/entity/blog/BlogResponse.dart';
 import 'package:blog/entity/user/Userresponse.dart';
 import 'package:blog/http/api.dart';
 import 'package:blog/http/httpUtil.dart';
+import 'package:blog/upload/upload.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -98,7 +99,6 @@ class EditPageState extends State<EditPage> {
           textColor: Colors.white);
       Navigator.of(context).pop();
     }).catchError((e) {
-      print(e);
     });
   }
 
@@ -123,7 +123,6 @@ class EditPageState extends State<EditPage> {
               TextEditingValue(text: blogVoResponse.data.title);
         });
       }).catchError((e) {
-        print(e);
       });
     }
   }
@@ -159,6 +158,15 @@ class EditPageState extends State<EditPage> {
                 setState(() {
                   _edit = !_edit;
                 });
+              }),
+          new IconButton(
+              icon: new Icon(
+                Icons.file_upload ,
+                color:Colors.yellow[300],
+              ),
+              onPressed: () {
+                Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) => new UploadPage(_user)));
               }),
           new IconButton(
               icon: new Icon(

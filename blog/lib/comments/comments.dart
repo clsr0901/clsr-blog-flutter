@@ -40,14 +40,12 @@ class CommentsPageState extends State<CommentsPage> {
     HttpUtil.getInstance()
         .get(Api.GETCOMMENTS + _blogId.toString())
         .then((res) {
-      print(res);
       var commentsResponse = CommentResponse.fromJson(res);
       setState(() {
         _commets.clear();
         _commets.addAll(commentsResponse.data);
       });
     }).catchError((e) {
-      print(e);
     });
   }
 
@@ -337,7 +335,6 @@ class CommentsPageState extends State<CommentsPage> {
         _commets.remove(comment);
       });
     }).catchError((e) {
-      print(e);
     });
   }
 
@@ -366,7 +363,6 @@ class CommentsPageState extends State<CommentsPage> {
         _commets.insert(0, commentResponse.data);
       });
     }, onError: (e) {
-      print(e);
     });
   }
 
@@ -448,7 +444,6 @@ class CommentsPageState extends State<CommentsPage> {
       });
       Navigator.of(context).pop();
     }, onError: (e) {
-      print(e);
     });
   }
 }

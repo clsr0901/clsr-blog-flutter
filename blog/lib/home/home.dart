@@ -28,8 +28,6 @@ class HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print("home主页");
-    print(user.toJson());
   }
 
   @override

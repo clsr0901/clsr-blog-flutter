@@ -41,7 +41,6 @@ class MessagePageState extends State<MessagePage> {
         _messages.addAll(messageResponse.data);
       });
     }).catchError((e) {
-      print(e);
     });
   }
 
@@ -235,7 +234,6 @@ class MessagePageState extends State<MessagePage> {
         _messages.remove(message);
       });
     }).catchError((e) {
-      print(e);
     });
   }
 
@@ -316,7 +314,6 @@ class MessagePageState extends State<MessagePage> {
       });
       Navigator.of(context).pop();
     }, onError: (e) {
-      print(e);
     });
   }
 }

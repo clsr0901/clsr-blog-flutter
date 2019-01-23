@@ -34,11 +34,7 @@ class LoginPageState extends State<LoginPage> {
               builder: (BuildContext context) => new HomePage(_user)),
           (Route route) => route == null);
     }
-//    , onError: (e) {
-//      print(e);
-//        }
         ).catchError((e) {
-      print(e);
     }
     );
   }

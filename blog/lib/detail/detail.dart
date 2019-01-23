@@ -100,7 +100,6 @@ class DetailPageState extends State<DetailPage> {
           textColor: Colors.white);
       Navigator.of(context).pop();
     }).catchError((e) {
-      print(e);
     });
   }
 
@@ -129,7 +128,6 @@ class DetailPageState extends State<DetailPage> {
         _blogVO = blogVoResponse.data;
       });
     }).catchError((e) {
-      print(e);
     });
   }
 
@@ -315,28 +313,37 @@ class DetailPageState extends State<DetailPage> {
                                             new CommentsPage(_blogId, _user)));
                               },
                             ),
-                            new IconButton(
-                              alignment: Alignment.centerRight,
-                              icon: new Icon(
+                          ],
+                        ),
+                        padding: EdgeInsets.only(
+                            left: 16.0, right: 16.0, bottom: 7.0),
+                      ),
+                      new Container(
+                        height: 20.0,
+                        child: new Row(
+                          children: <Widget>[
+                            new Expanded(child: new Text(""), flex: 1,),
+                            new Padding(padding: EdgeInsets.only(right: 10.0),
+                            child: new GestureDetector(
+                              child: new Icon(
                                 Icons.edit,
                                 color: Theme.of(context).primaryColorLight,
+                                size: 16.0,
                               ),
-                              iconSize: 16.0,
-                              onPressed: () {
+                              onTap: () {
                                 Navigator.of(context).push(
                                     new MaterialPageRoute(
                                         builder: (BuildContext context) =>
-                                            new EditPage(_user, _blogId)));
+                                        new EditPage(_user, _blogId)));
                               },
-                            ),
-                            new IconButton(
-                                alignment: Alignment.centerLeft,
-                                icon: Icon(
+                            ),),
+                            new GestureDetector(
+                                child: Icon(
                                   Icons.delete_outline,
                                   color: Theme.of(context).primaryColorDark,
                                   size: 16.0,
                                 ),
-                                onPressed: () {
+                                onTap: () {
                                   showDeleteDialog(context);
                                 })
                           ],

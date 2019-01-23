@@ -14,7 +14,6 @@ class BlogListView extends StatefulWidget {
   BlogListView(this._user);
 
   void toTop() {
-    print(_blogListViewState == null);
     if (_blogListViewState != null) _blogListViewState.toTop();
   }
 
@@ -81,7 +80,6 @@ class BlogListViewState extends State<BlogListView> {
         }
       });
     }, onError: (e) {
-      print(e);
     });
   }
 

@@ -72,8 +72,8 @@ class HttpUtil {
       map['Authorization'] = _token;
       _dio.options.headers.addAll(map);
     }
-    print("设置token");
-    print(_dio.options.headers.toString());
+//    print("设置token");
+//    print(_dio.options.headers.toString());
   }
 
 //  setFormDataHeaders(){
@@ -81,7 +81,7 @@ class HttpUtil {
 //  }
 
   Future put(url, {data, options, cancelToken}) async {
-    print('put请求启动! url：$url ,body: $data');
+//    print('put请求启动! url：$url ,body: $data');
     Response response;
     try {
       response = await _dio.put(
@@ -89,19 +89,19 @@ class HttpUtil {
         data: data,
         cancelToken: cancelToken,
       );
-      print('put请求成功!response.data：${response.data}');
+//      print('put请求成功!response.data：${response.data}');
       return new Future(() => response.data);
     } on DioError catch (e) {
       if (CancelToken.isCancel(e)) {
-        print('put请求取消! ' + e.message);
+//        print('put请求取消! ' + e.message);
       }
-      print('put请求发生错误：$e');
+//      print('put请求发生错误：$e');
       throw e;
     }
   }
 
   Future delete(url, {data, options, cancelToken}) async {
-    print('delete请求启动! url：$url ,body: $data');
+//    print('delete请求启动! url：$url ,body: $data');
     Response response;
     try {
       response = await _dio.delete(
@@ -109,21 +109,21 @@ class HttpUtil {
         data: data,
         cancelToken: cancelToken,
       );
-      print('delete请求成功!response.data：${response.data}');
+//      print('delete请求成功!response.data：${response.data}');
       return new Future(() => response.data);
     } on DioError catch (e) {
       if (CancelToken.isCancel(e)) {
-        print('delete请求取消! ' + e.message);
+//        print('delete请求取消! ' + e.message);
       }
-      print('delete请求发生错误：$e');
+//      print('delete请求发生错误：$e');
       throw e;
     }
   }
 
   Future post(url, {data, options, cancelToken}) async {
-    print('post请求启动!,options:');
-    print(_dio.options.headers);
-    print('post请求启动! url：$url ,body: $data');
+//    print('post请求启动!,options:');
+//    print(_dio.options.headers);
+//    print('post请求启动! url：$url ,body: $data');
     Response response;
     try {
       response = await _dio.post(
@@ -131,23 +131,21 @@ class HttpUtil {
         data: data,
         cancelToken: cancelToken,
       );
-      print('post请求成功!response.data：${response.data}');
+//      print('post请求成功!response.data：${response.data}');
       return new Future(() => response.data);
     } on DioError catch (e) {
       if (CancelToken.isCancel(e)) {
-        print('post请求取消! ' + e.message);
+//        print('post请求取消! ' + e.message);
       }
-      print('post请求发生错误：$e');
+//      print('post请求发生错误：$e');
       throw e;
     }
   }
 
   Future get(url, {data, options, cancelToken}) async {
-    print(
-      'get请求启动! url：$url ,body: $data, options:$options',
-    );
-    print("请求头");
-    print(_dio.options.headers.toString());
+//    print('get请求启动! url：$url ,body: $data, options:$options',);
+//    print("请求头");
+//    print(_dio.options.headers.toString());
     Response response;
     try {
       response = await _dio.get(
@@ -155,13 +153,13 @@ class HttpUtil {
         data: data,
         cancelToken: cancelToken,
       );
-      print('get请求成功!response.data：${response.data}');
+//      print('get请求成功!response.data：${response.data}');
       return new Future(() => response.data);
     } on DioError catch (e) {
       if (CancelToken.isCancel(e)) {
-        print('get请求取消! ' + e.message);
+//        print('get请求取消! ' + e.message);
       }
-      print('get请求发生错误：$e');
+//      print('get请求发生错误：$e');
       throw e;
     }
   }
@@ -176,7 +174,6 @@ class HttpUtil {
       });
       return new Future(() => response.data);
     } catch (e) {
-      print(e);
       throw e;
     }
   }

@@ -34,7 +34,6 @@ class UserInfoPageState extends State<UserInfoPage> {
         _user = userVOResponse.data;
       });
     }).catchError((e) {
-      print(e);
     });
   }
 
@@ -72,7 +71,7 @@ class UserInfoPageState extends State<UserInfoPage> {
               ),
               margin: EdgeInsets.only(
                   top: 100.0, left: 50.0, right: 50.0, bottom: 100.0),
-              padding: EdgeInsets.only(top: 55.0),
+              padding: EdgeInsets.only(top: 35.0),
               child: new Container(
                 width: double.infinity,
                 height: double.infinity,
@@ -82,7 +81,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                       width: double.infinity,
                       alignment: Alignment.center,
                       child: new Text(
-                        _user == null ? "0" : _user.username,
+                        _user == null ? "佚名" : _user.username,
                         style: new TextStyle(
                             color: Theme.of(context).primaryColorDark,
                             fontSize: 24.0,
@@ -183,22 +182,24 @@ class UserInfoPageState extends State<UserInfoPage> {
                       height: 0.1,
                     ),
                     new Padding(
-                      padding: EdgeInsets.all(10.0),
+                      padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
                       child: new Row(
                         children: <Widget>[
                           new Expanded(
                             child: new Icon(
                               Icons.phone,
                               color: Colors.green[300],
-                              size: 20.0,
+                              size: 16.0,
                             ),
                             flex: 1,
                           ),
                           new Expanded(
                             child: new Text(
-                              _user == null ? "0" : _user.phone,
+                              _user == null
+                                  ? "未找到用户电话"
+                                  : _user.phone == null ? "该用户没留下电话" : _user.phone,
                               style: new TextStyle(
-                                  color: Colors.black38, fontSize: 20.0),
+                                  color: Colors.black38, fontSize: 16.0),
                             ),
                             flex: 4,
                           ),
@@ -206,22 +207,24 @@ class UserInfoPageState extends State<UserInfoPage> {
                       ),
                     ),
                     new Padding(
-                      padding: EdgeInsets.all(10.0),
+                      padding:EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
                       child: new Row(
                         children: <Widget>[
                           new Expanded(
                             child: new Icon(
                               Icons.alternate_email,
                               color: Colors.green[300],
-                              size: 20.0,
+                              size: 16.0,
                             ),
                             flex: 1,
                           ),
                           new Expanded(
                             child: new Text(
-                              _user == null ? "0" : _user.email,
+                              _user == null
+                                  ? "未找到用户邮箱"
+                                  : _user.email == null ? "用户没有留下邮箱" : _user.email,
                               style: new TextStyle(
-                                  color: Colors.black38, fontSize: 20.0),
+                                  color: Colors.black38, fontSize: 16.0),
                             ),
                             flex: 4,
                           ),
@@ -246,8 +249,11 @@ class UserInfoPageState extends State<UserInfoPage> {
                         ),
                         padding:
                             EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0),
-                        child:
-                            new Text(_user == null ? "0" : _user.instruction),
+                        child: new Text(_user == null
+                            ? "未找到用户介绍"
+                            : _user.instruction == null
+                                ? "用户没留下任何痕迹"
+                                : _user.instruction),
                         decoration: new BoxDecoration(
                           border: new Border.all(
                               width: 1.0, color: Colors.grey[200]),
@@ -287,14 +293,16 @@ class UserInfoPageState extends State<UserInfoPage> {
                   child: ClipOval(
                     child: _user == null
                         ? new Image.asset("images/logo.png")
-                        : new FadeInImage.assetNetwork(
-                            placeholder: "images/logo.png",
-                            //预览图
-                            fit: BoxFit.fitWidth,
-                            image: (Api.BASE_URL + _user.avatar),
-                            width: 100.0,
-                            height: 100.0,
-                          ),
+                        : _user.avatar == null
+                            ? new Image.asset("images/logo.png")
+                            : new FadeInImage.assetNetwork(
+                                placeholder: "images/logo.png",
+                                //预览图
+                                fit: BoxFit.fitWidth,
+                                image: (Api.BASE_URL + _user.avatar),
+                                width: 100.0,
+                                height: 100.0,
+                              ),
                   ),
                 ),
               ),
